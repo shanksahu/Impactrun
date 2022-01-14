@@ -5,7 +5,7 @@ const studentCsvModel = require("../Schema/studentSchemas")
 
 
 exports.studentcsv = (req, res) => {
-
+try {
     csv()
         .fromFile(req.file.path)
 
@@ -22,6 +22,10 @@ exports.studentcsv = (req, res) => {
                 }
             });
         })
+    
+} catch (error) {
+    res.status(400).json({error:error})
+}
 }
 
 
@@ -58,7 +62,7 @@ exports.getresult = async (req, res) => {
 
 exports.getallresult = async (req, res) => {
     try {
-        //retriving collection
+        //retriving from collection
         const student = await studentCsvModel.find({})
 
         var Pass = []
@@ -86,7 +90,7 @@ exports.getallresult = async (req, res) => {
             res.status(400).send("Bad Request")
         }
     } catch (error) {
-        res.status(400).json({ error: "Bad Request" })
+        res.status(400).json({ error: error })
     }
 }
 
